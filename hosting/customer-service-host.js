@@ -24,7 +24,11 @@ class CustomerServiceHost {
 
         this.portNumber = portNumber;
         this.app = express();
-        this.httpServer = http.createServer(this.app);
+        this.httpServer = http.createServer({
+            key: sslDetails.PRIVATE_KEY_FILE,
+            cert: sslDetails.CERTIFICATE_FILE,
+            passphrase: sslDetails.PRIVATE_KEY_PASSPHRASE
+        }, this.app);
         this.socketIOServer = new Server(this.httpServer);
         this.customerRouter = new CustomerRouter(this.socketIOServer);
         this.userProfileRouter = new UserProfileRouting();
