@@ -1,5 +1,5 @@
 import express from "express";
-import http from 'http';
+import https from 'https';
 import { Server } from 'socket.io';
 import { CustomerRouter } from '../routing/index.js';
 import UserProfileRouting from "../routing/user-profile-routing.js";
@@ -24,10 +24,9 @@ class CustomerServiceHost {
 
         this.portNumber = portNumber;
         this.app = express();
-        this.httpServer = http.createServer({
+        this.httpServer = https.createServer({
             key: sslDetails.PRIVATE_KEY_FILE,
-            cert: sslDetails.CERTIFICATE_FILE,
-            passphrase: sslDetails.PRIVATE_KEY_PASSPHRASE
+            cert: sslDetails.CERTIFICATE_FILE
         }, this.app);
         this.socketIOServer = new Server(this.httpServer);
         this.customerRouter = new CustomerRouter(this.socketIOServer);
